@@ -1,34 +1,70 @@
-const GEMINI_API_KEY = "API_KEYINI_BURAYA_YAZ"; // AI Studio'dan alacağın key
-
+// DOM Elemanları
 const chatBox = document.getElementById("chatBox");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 const aiCore = document.getElementById("aiCore");
 
-// Kalıcı Profil Hafızası
+// Sekme Geçişleri
+const navBtns = document.querySelectorAll(".nav-btn");
+const tabContents = document.querySelectorAll(".tab-content");
+
+navBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    navBtns.forEach(b => b.classList.remove("active"));
+    tabContents.forEach(c => c.classList.remove("active"));
+    
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  });
+});
+
+// Kayıtlı Ayarları Yükle
+let apiKey = localStorage.getItem("mentorX_apiKey") || "";
+document.getElementById("apiKeyInput").value = apiKey;
+
 let mentorMemory = JSON.parse(localStorage.getItem("mentorX_memory")) || {
   userName: "Önder Kozak",
   details: "Yazılım, oyun geliştirme ve tarih ile ilgileniyor. Eşit Ağırlık öğrencisi."
 };
 
+document.getElementById("memName").value = mentorMemory.userName;
+document.getElementById("memDetails").value = mentorMemory.details;
+
+// Ayarları Kaydetme İşlemleri
+document.getElementById("saveKeyBtn").addEventListener("click", () => {
+  apiKey = document.getElementById("apiKeyInput").value.trim();
+  localStorage.setItem("mentorX_apiKey", apiKey);
+  alert("API Key kaydedildi!");
+});
+
+document.getElementById("saveMemoryBtn").addEventListener("click", () => {
+  mentorMemory.userName = document.getElementById("memName").value.trim();
+  mentorMemory.details = document.getElementById("memDetails").value.trim();
+  localStorage.setItem("mentorX_memory", JSON.stringify(mentorMemory));
+  alert("Hafıza güncellendi!");
+});
+
+// Mesaj Gönderme
 let chatHistory = [];
 
 async function sendMessage() {
   const text = userInput.value.trim();
   if (!text) return;
 
-  // Kullanıcı mesajını ekrana yazdır
+  if (!apiKey) {
+    appendMessage("bot", "Lütfen önce Ayarlar sekmesinden Gemini API Key'inizi girin!");
+    return;
+  }
+
   appendMessage("user", text);
   userInput.value = "";
-
-  // Animasyonu başlat (Düşünme Modu)
   aiCore.classList.add("thinking");
 
-  const systemInstruction = `Sen MENTOR-X adında karizmatik ve akıllı bir yapay zekasın. Kullanıcı adı: ${mentorMemory.userName}. Bilgiler: ${mentorMemory.details}`;
+  const systemInstruction = `Sen MENTOR-X adında karizmatik bir yapay zekasın. Kullanıcı adı: ${mentorMemory.userName}. Bilgiler: ${mentorMemory.details}`;
   chatHistory.push({ role: "user", parts: [{ text }] });
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -43,9 +79,8 @@ async function sendMessage() {
     chatHistory.push({ role: "model", parts: [{ text: botText }] });
     appendMessage("bot", botText);
   } catch (err) {
-    appendMessage("bot", "Bağlantı hatası! Lütfen API anahtarını kontrol et.");
+    appendMessage("bot", "Bağlantı hatası! API key veya internet bağlantınızı kontrol edin.");
   } finally {
-    // Animasyonu bitir
     aiCore.classList.remove("thinking");
   }
 }
@@ -53,17 +88,13 @@ async function sendMessage() {
 function appendMessage(role, text) {
   const msgDiv = document.createElement("div");
   msgDiv.className = `message ${role}`;
-  if(role === 'bot') {
-    msgDiv.innerHTML = `<div class="sender">MENTOR-X</div><div class="text">${text}</div>`;
-  } else {
-    msgDiv.innerHTML = `<div class="text">${text}</div>`;
-  }
+  msgDiv.innerHTML = role === 'bot' 
+    ? `<div class="sender">MENTOR-X</div><div class="text">${text}</div>`
+    : `<div class="text">${text}</div>`;
+  
   chatBox.appendChild(msgDiv);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 sendBtn.addEventListener("click", sendMessage);
-userInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") sendMessage();
-});
-  
+userInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
