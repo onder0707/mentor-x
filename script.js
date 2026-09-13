@@ -3,22 +3,29 @@ const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 const aiCore = document.getElementById("aiCore");
 
-// API Key doğrudan koda sabitlendi
-let apiKey = "AQ.Ab8RN6IaDb11dgqWs0TXdEPB-I-mDxTZraAWhhIk9iFHpKewGw";
+// Google AI Studio'dan aldığın yeni format API Key
+const apiKey = "AQ.Ab8RN6IaDb11dgqWs0TXdEPB-I-mDxTZraAWhhIk9iFHpKewGw";
 
-// Sekme Değiştirme Mantığı
+// Sekme Geçiş Mantığı
 const navBtns = document.querySelectorAll(".nav-btn");
-const tabPanels = document.querySelectorAll(".tab-panel");
+const tabPanels = document.querySelectorAll(".tab-panel, .tab-content");
 
 if (navBtns.length > 0) {
   navBtns.forEach(btn => {
     btn.addEventListener("click", () => {
       navBtns.forEach(b => b.classList.remove("active"));
-      tabPanels.forEach(p => p.classList.remove("active"));
+      tabPanels.forEach(p => {
+        p.classList.remove("active");
+        p.style.display = "none";
+      });
 
       btn.classList.add("active");
-      const target = document.getElementById(btn.dataset.tab);
-      if (target) target.classList.add("active");
+      const targetId = btn.getAttribute("data-tab");
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.classList.add("active");
+        target.style.display = "flex";
+      }
     });
   });
 }
@@ -44,7 +51,7 @@ if (saveMemBtn) {
   });
 }
 
-// AI Sohbet Mantığı
+// AI Sohbet Mantığı (Yeni AQ... Formatına Uyumlu Header İstegi)
 let chatHistory = [];
 
 async function sendMessage() {
@@ -60,9 +67,13 @@ async function sendMessage() {
   chatHistory.push({ role: "user", parts: [{ text: text }] });
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    // Yeni AQ key formatı için 'x-goog-api-key' header'ı kullanılıyor
+    const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "x-goog-api-key": apiKey
+      },
       body: JSON.stringify({
         contents: [
           { role: "user", parts: [{ text: systemInstruction }] },
@@ -74,16 +85,16 @@ async function sendMessage() {
     const data = await response.json();
     
     if (data.error) {
-      appendMessage("bot", `API Hatası: ${data.error.message || 'Geçersiz API Key'}`);
+      appendMessage("bot", `API Hatası (${data.error.code}): ${data.error.message}`);
     } else if (data.candidates && data.candidates[0].content) {
       const botText = data.candidates[0].content.parts[0].text;
       chatHistory.push({ role: "model", parts: [{ text: botText }] });
       appendMessage("bot", botText);
     } else {
-      appendMessage("bot", "Yanıt alınamadı. API Key'inizi aistudio.google.com üzerinden tekrar kontrol edin.");
+      appendMessage("bot", "Yanıt alınamadı, lütfen tekrar dene.");
     }
   } catch (err) {
-    appendMessage("bot", "Bağlantı hatası! Sunucuya erişilemedi.");
+    appendMessage("bot", "Bağlantı hatası! İnternetini veya tarayıcı izinlerini kontrol et.");
   } finally {
     if (aiCore) aiCore.classList.remove("thinking");
   }
