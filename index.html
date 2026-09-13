@@ -1,1 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MENTOR-X AI</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
 
+  <div class="app-container">
+    <!-- Fütüristik AI Çekirdeği -->
+    <header class="ai-header">
+      <div class="ai-core" id="aiCore"></div>
+      <h2>MENTOR-X</h2>
+      <span class="status-badge">Çevrimiçi</span>
+    </header>
+
+    <!-- Chat Mesaj Alanı -->
+    <div class="chat-box" id="chatBox">
+      <div class="message bot">
+        <div class="sender">MENTOR-X</div>
+        <div class="text">Sistem aktif. Seni dinliyorum.</div>
+      </div>
+    </div>
+
+    <!-- Giriş Alanı ve Butonlar -->
+    <footer class="input-area">
+      <div class="input-wrapper">
+        <input type="text" id="userInput" placeholder="Mesajınızı yazın..." autocomplete="off">
+        <button id="sendBtn">Gönder</button>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
