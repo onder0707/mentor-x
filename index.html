@@ -3,41 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>MENTOR-X OS</title>
+  <title>MENTOR-X AI</title>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
   <div class="app-layout">
-    <!-- Sol/Alt Navigasyon Menüsü -->
-    <nav class="sidebar">
-      <div class="brand">
-        <div class="ai-core" id="aiCore"></div>
+    <!-- Üst Başlık ve AI Çekirdeği -->
+    <header class="app-header">
+      <div class="ai-core" id="aiCore"></div>
+      <div class="header-info">
         <h1>MENTOR-X</h1>
+        <span class="status-badge">Çevrimiçi</span>
       </div>
-      <div class="nav-items">
-        <button class="nav-btn active" data-tab="chat-tab">
-          <span>💬</span> <label>Sohbet</label>
-        </button>
-        <button class="nav-btn" data-tab="memory-tab">
-          <span>🧠</span> <label>Hafıza</label>
-        </button>
-        <button class="nav-btn" data-tab="settings-tab">
-          <span>⚙️</span> <label>Ayarlar</label>
-        </button>
-      </div>
-    </nav>
+    </header>
 
-    <!-- Ana İçerik Alanı -->
-    <main class="main-content">
+    <!-- Sekme İçi İçerikler (Tek Ekran) -->
+    <main class="content-area">
       
-      <!-- SEKMESİ 1: SOHBET -->
-      <section id="chat-tab" class="tab-content active">
-        <div class="chat-header">
-          <h2>Yapay Zeka Asistanı</h2>
-          <span class="status-badge">Çevrimiçi</span>
-        </div>
+      <!-- 1. SOHBET SEKMESİ -->
+      <section id="chat-tab" class="tab-panel active">
         <div class="chat-box" id="chatBox">
           <div class="message bot">
             <div class="sender">MENTOR-X</div>
@@ -45,41 +31,45 @@
           </div>
         </div>
         <div class="input-area">
-          <input type="text" id="userInput" placeholder="MENTOR-X'e bir şey sor..." autocomplete="off">
+          <input type="text" id="userInput" placeholder="Mesajınızı yazın..." autocomplete="off">
           <button id="sendBtn">Gönder</button>
         </div>
       </section>
 
-      <!-- SEKMESİ 2: HAFIZA VE PROFİL -->
-      <section id="memory-tab" class="tab-content">
-        <h2>MENTOR-X Hafıza Paneli</h2>
-        <p class="tab-desc">Yapay zekanın senin hakkında sakladığı kalıcı bilgiler:</p>
-        <div class="memory-card">
-          <label>Kullanıcı Adı:</label>
+      <!-- 2. HAFIZA SEKMESİ -->
+      <section id="memory-tab" class="tab-panel">
+        <h2>Kalıcı Hafıza</h2>
+        <div class="card">
+          <label>Kullanıcı Adı</label>
           <input type="text" id="memName" value="Önder Kozak">
           
-          <label>Kişisel Detaylar ve Tercihler:</label>
-          <textarea id="memDetails" rows="5">Yazılım, oyun geliştirme ve tarih ile ilgileniyor. Eşit Ağırlık öğrencisi.</textarea>
+          <label>Profil Bilgileri & Detaylar</label>
+          <textarea id="memDetails" rows="4">Yazılım, oyun geliştirme ve tarih ile ilgileniyor. Eşit Ağırlık öğrencisi.</textarea>
           
-          <button id="saveMemoryBtn">Hafızayı Güncelle</button>
+          <button id="saveMemoryBtn" class="action-btn">Hafızayı Kaydet</button>
         </div>
       </section>
 
-      <!-- SEKMESİ 3: AYARLAR -->
-      <section id="settings-tab" class="tab-content">
+      <!-- 3. AYARLAR SEKMESİ -->
+      <section id="settings-tab" class="tab-panel">
         <h2>Sistem Ayarları</h2>
-        <div class="settings-card">
-          <label>Gemini API Anahtarı:</label>
-          <input type="password" id="apiKeyInput" placeholder="AI Studio'dan aldığın API Key...">
-          <button id="saveKeyBtn">Kaydet</button>
-          <small>API Key cihazında yerel olarak saklanır.</small>
+        <div class="card">
+          <label>Gemini API Key</label>
+          <input type="password" id="apiKeyInput" placeholder="API Key yapıştırın...">
+          <button id="saveKeyBtn" class="action-btn">Key'i Kaydet</button>
         </div>
       </section>
 
     </main>
+
+    <!-- Alt Navigasyon Menüsü -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-tab="chat-tab">💬 Sohbet</button>
+      <button class="nav-btn" data-tab="memory-tab">🧠 Hafıza</button>
+      <button class="nav-btn" data-tab="settings-tab">⚙️ Ayarlar</button>
+    </nav>
   </div>
 
   <script src="script.js"></script>
 </body>
-        </html>
-        
+</html>
