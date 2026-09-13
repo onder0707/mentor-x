@@ -2,59 +2,48 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 body {
   background-color: #090d16;
-  color: #f1f5f9;
+  color: #fff;
   height: 100dvh;
   overflow: hidden;
 }
 
-/* Ana Düzen (Desktop İlk Yaklaşım) */
 .app-layout {
   display: flex;
-  height: 100dvh;
-  width: 100vw;
-}
-
-/* Sidebar (Sol Menü) */
-.sidebar {
-  width: 240px;
-  background: #111827;
-  border-right: 1px solid #1e293b;
-  display: flex;
   flex-direction: column;
-  padding: 20px 15px;
+  height: 100dvh;
+  max-width: 600px;
+  margin: 0 auto;
+  background: #0f172a;
 }
 
-.brand {
+/* Header */
+.app-header {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 30px;
-}
-
-.brand h1 {
-  font-size: 18px;
-  letter-spacing: 1px;
-  color: #38bdf8;
+  padding: 12px 16px;
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
 }
 
 .ai-core {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: radial-gradient(circle, #38bdf8 0%, #3b82f6 100%);
-  box-shadow: 0 0 12px #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
   animation: pulse 2s infinite ease-in-out;
 }
 
 @keyframes pulse {
-  0% { transform: scale(0.95); box-shadow: 0 0 8px #38bdf8; }
-  50% { transform: scale(1.05); box-shadow: 0 0 20px #38bdf8; }
-  100% { transform: scale(0.95); box-shadow: 0 0 8px #38bdf8; }
+  0% { transform: scale(0.95); }
+  50% { transform: scale(1.08); box-shadow: 0 0 18px #38bdf8; }
+  100% { transform: scale(0.95); }
 }
 
 .ai-core.thinking {
@@ -63,179 +52,118 @@ body {
 
 @keyframes spin { 100% { transform: rotate(360deg); } }
 
-.nav-items {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+.header-info h1 { font-size: 16px; color: #38bdf8; }
+.status-badge { font-size: 10px; color: #10b981; }
 
-.nav-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  padding: 12px 16px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 15px;
-  transition: all 0.2s;
-  text-align: left;
-}
-
-.nav-btn:hover, .nav-btn.active {
-  background: #1e293b;
-  color: #38bdf8;
-}
-
-/* Ana İçerik */
-.main-content {
+/* Ana İçerik ve Sekmeler */
+.content-area {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: #0f172a;
   position: relative;
+  overflow: hidden;
 }
 
-.tab-content {
+.tab-panel {
   display: none;
   flex-direction: column;
   height: 100%;
-  padding: 20px;
+  padding: 15px;
+  box-sizing: border-box;
 }
 
-.tab-content.active {
+.tab-panel.active {
   display: flex;
 }
 
-/* Sohbet Ekranı */
-.chat-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #1e293b;
-}
-
-.status-badge {
-  font-size: 12px;
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
-  padding: 4px 10px;
-  border-radius: 20px;
-}
-
+/* Sohbet Alanı */
 .chat-box {
   flex: 1;
   overflow-y: auto;
-  padding: 15px 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  padding-bottom: 10px;
 }
 
 .message {
-  max-width: 75%;
-  padding: 12px 16px;
-  border-radius: 14px;
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 12px;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .message.user {
   align-self: flex-end;
   background: #2563eb;
   color: #fff;
-  border-bottom-right-radius: 2px;
 }
 
 .message.bot {
   align-self: flex-start;
   background: #1e293b;
   border: 1px solid #334155;
-  border-bottom-left-radius: 2px;
 }
 
-.sender {
-  font-size: 11px;
-  color: #38bdf8;
-  margin-bottom: 4px;
-  font-weight: bold;
-}
+.sender { font-size: 10px; color: #38bdf8; margin-bottom: 2px; font-weight: bold; }
 
 .input-area {
   display: flex;
-  gap: 10px;
-  padding-top: 15px;
-  border-top: 1px solid #1e293b;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid #334155;
 }
 
 input[type="text"], input[type="password"], textarea {
   width: 100%;
   background: #1e293b;
   border: 1px solid #334155;
-  border-radius: 10px;
-  padding: 12px 16px;
+  border-radius: 8px;
+  padding: 10px;
   color: #fff;
   outline: none;
 }
 
-button#sendBtn, #saveMemoryBtn, #saveKeyBtn {
+button {
   background: #38bdf8;
   color: #0f172a;
   border: none;
-  border-radius: 10px;
-  padding: 0 20px;
+  border-radius: 8px;
+  padding: 0 16px;
   font-weight: bold;
   cursor: pointer;
 }
 
-/* Hafıza & Ayarlar Kartları */
-.memory-card, .settings-card {
+/* Kartlar */
+.card {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   background: #1e293b;
-  padding: 20px;
-  border-radius: 12px;
-  margin-top: 15px;
-  max-width: 500px;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 10px;
 }
 
-.tab-desc { color: #94a3b8; font-size: 14px; margin-top: 5px; }
+label { font-size: 12px; color: #94a3b8; }
+.action-btn { padding: 12px; margin-top: 5px; }
 
-/* MOBİL TASARIM (Alt Menü) */
-@media (max-width: 768px) {
-  .app-layout {
-    flex-direction: column-reverse;
-  }
+/* Alt Navigasyon */
+.bottom-nav {
+  display: flex;
+  height: 55px;
+  background: #1e293b;
+  border-top: 1px solid #334155;
+}
 
-  .sidebar {
-    width: 100%;
-    height: 65px;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0;
-    border-right: none;
-    border-top: 1px solid #1e293b;
-  }
+.nav-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 13px;
+}
 
-  .brand { display: none; }
-
-  .nav-items {
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-around;
-  }
-
-  .nav-btn {
-    flex-direction: column;
-    gap: 2px;
-    padding: 8px;
-    font-size: 11px;
-  }
-
-  .message { max-width: 88%; }
+.nav-btn.active {
+  color: #38bdf8;
+  background: #0f172a;
   }
