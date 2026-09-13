@@ -2,137 +2,240 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 body {
-  background-color: #0b0f19;
-  color: #fff;
+  background-color: #090d16;
+  color: #f1f5f9;
   height: 100dvh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
 }
 
-.app-container {
-  width: 100%;
-  max-width: 480px;
-  height: 100dvh;
+/* Ana Düzen (Desktop İlk Yaklaşım) */
+.app-layout {
   display: flex;
-  flex-direction: column;
-  background: #111625;
-  border-left: 1px solid #1f293d;
-  border-right: 1px solid #1f293d;
+  height: 100dvh;
+  width: 100vw;
 }
 
-/* AI Header & Çekirdek */
-.ai-header {
-  padding: 15px;
-  text-align: center;
-  background: #161c2e;
-  border-bottom: 1px solid #232d42;
+/* Sidebar (Sol Menü) */
+.sidebar {
+  width: 240px;
+  background: #111827;
+  border-right: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 15px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.brand h1 {
+  font-size: 18px;
+  letter-spacing: 1px;
+  color: #38bdf8;
 }
 
 .ai-core {
-  width: 50px;
-  height: 50px;
-  margin: 0 auto 8px auto;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: radial-gradient(circle, #00f2fe 0%, #4facfe 100%);
-  box-shadow: 0 0 15px #00f2fe;
+  background: radial-gradient(circle, #38bdf8 0%, #3b82f6 100%);
+  box-shadow: 0 0 12px #38bdf8;
   animation: pulse 2s infinite ease-in-out;
 }
 
 @keyframes pulse {
-  0% { transform: scale(0.95); box-shadow: 0 0 10px #00f2fe; }
-  50% { transform: scale(1.08); box-shadow: 0 0 25px #00f2fe, 0 0 35px #4facfe; }
-  100% { transform: scale(0.95); box-shadow: 0 0 10px #00f2fe; }
+  0% { transform: scale(0.95); box-shadow: 0 0 8px #38bdf8; }
+  50% { transform: scale(1.05); box-shadow: 0 0 20px #38bdf8; }
+  100% { transform: scale(0.95); box-shadow: 0 0 8px #38bdf8; }
 }
 
 .ai-core.thinking {
-  animation: spin 0.8s infinite linear, pulse 0.4s infinite ease-in-out;
+  animation: spin 0.8s infinite linear;
 }
 
-@keyframes spin {
-  100% { transform: rotate(360deg); }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+.nav-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 12px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.nav-btn:hover, .nav-btn.active {
+  background: #1e293b;
+  color: #38bdf8;
+}
+
+/* Ana İçerik */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #0f172a;
+  position: relative;
+}
+
+.tab-content {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+}
+
+.tab-content.active {
+  display: flex;
+}
+
+/* Sohbet Ekranı */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #1e293b;
 }
 
 .status-badge {
-  font-size: 11px;
-  color: #00ff88;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-size: 12px;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
 }
 
-/* Chat Alanı */
 .chat-box {
   flex: 1;
-  padding: 15px;
   overflow-y: auto;
+  padding: 15px 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
 .message {
-  max-width: 85%;
-  padding: 10px 14px;
-  border-radius: 12px;
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: 14px;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .message.user {
   align-self: flex-end;
-  background: #0052cc;
+  background: #2563eb;
   color: #fff;
   border-bottom-right-radius: 2px;
 }
 
 .message.bot {
   align-self: flex-start;
-  background: #1d263b;
-  color: #e2e8f0;
+  background: #1e293b;
+  border: 1px solid #334155;
   border-bottom-left-radius: 2px;
-  border: 1px solid #2a3652;
 }
 
 .sender {
-  font-size: 10px;
-  color: #00f2fe;
-  margin-bottom: 3px;
+  font-size: 11px;
+  color: #38bdf8;
+  margin-bottom: 4px;
   font-weight: bold;
 }
 
-/* Input Alanı */
 .input-area {
-  padding: 12px;
-  background: #161c2e;
-  border-top: 1px solid #232d42;
-}
-
-.input-wrapper {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  padding-top: 15px;
+  border-top: 1px solid #1e293b;
 }
 
-input[type="text"] {
-  flex: 1;
-  background: #0b0f19;
-  border: 1px solid #2a3652;
-  border-radius: 8px;
-  padding: 10px 12px;
+input[type="text"], input[type="password"], textarea {
+  width: 100%;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 12px 16px;
   color: #fff;
   outline: none;
 }
 
-button {
-  background: linear-gradient(135deg, #00f2fe, #4facfe);
+button#sendBtn, #saveMemoryBtn, #saveKeyBtn {
+  background: #38bdf8;
+  color: #0f172a;
   border: none;
-  border-radius: 8px;
-  padding: 0 16px;
-  color: #000;
+  border-radius: 10px;
+  padding: 0 20px;
   font-weight: bold;
   cursor: pointer;
+}
+
+/* Hafıza & Ayarlar Kartları */
+.memory-card, .settings-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 15px;
+  max-width: 500px;
+}
+
+.tab-desc { color: #94a3b8; font-size: 14px; margin-top: 5px; }
+
+/* MOBİL TASARIM (Alt Menü) */
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column-reverse;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: 65px;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0;
+    border-right: none;
+    border-top: 1px solid #1e293b;
+  }
+
+  .brand { display: none; }
+
+  .nav-items {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .nav-btn {
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  .message { max-width: 88%; }
   }
