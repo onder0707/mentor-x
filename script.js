@@ -1,24 +1,23 @@
-// DOM Elemanları
 const chatBox = document.getElementById("chatBox");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 const aiCore = document.getElementById("aiCore");
 
-// Sekme Geçişleri
+// Sekme Değiştirme Mantığı
 const navBtns = document.querySelectorAll(".nav-btn");
-const tabContents = document.querySelectorAll(".tab-content");
+const tabPanels = document.querySelectorAll(".tab-panel");
 
 navBtns.forEach(btn => {
   btn.addEventListener("click", () => {
     navBtns.forEach(b => b.classList.remove("active"));
-    tabContents.forEach(c => c.classList.remove("active"));
-    
+    tabPanels.forEach(p => p.classList.remove("active"));
+
     btn.classList.add("active");
     document.getElementById(btn.dataset.tab).classList.add("active");
   });
 });
 
-// Kayıtlı Ayarları Yükle
+// Kayıtlı Bilgileri Yükle
 let apiKey = localStorage.getItem("mentorX_apiKey") || "";
 document.getElementById("apiKeyInput").value = apiKey;
 
@@ -30,7 +29,7 @@ let mentorMemory = JSON.parse(localStorage.getItem("mentorX_memory")) || {
 document.getElementById("memName").value = mentorMemory.userName;
 document.getElementById("memDetails").value = mentorMemory.details;
 
-// Ayarları Kaydetme İşlemleri
+// Ayarları Kaydetme
 document.getElementById("saveKeyBtn").addEventListener("click", () => {
   apiKey = document.getElementById("apiKeyInput").value.trim();
   localStorage.setItem("mentorX_apiKey", apiKey);
@@ -44,7 +43,7 @@ document.getElementById("saveMemoryBtn").addEventListener("click", () => {
   alert("Hafıza güncellendi!");
 });
 
-// Mesaj Gönderme
+// AI Sohbet Mantığı
 let chatHistory = [];
 
 async function sendMessage() {
@@ -52,7 +51,7 @@ async function sendMessage() {
   if (!text) return;
 
   if (!apiKey) {
-    appendMessage("bot", "Lütfen önce Ayarlar sekmesinden Gemini API Key'inizi girin!");
+    appendMessage("bot", "Lütfen önce Ayarlar sekmesine gidip API Key'inizi kaydedin!");
     return;
   }
 
@@ -79,7 +78,7 @@ async function sendMessage() {
     chatHistory.push({ role: "model", parts: [{ text: botText }] });
     appendMessage("bot", botText);
   } catch (err) {
-    appendMessage("bot", "Bağlantı hatası! API key veya internet bağlantınızı kontrol edin.");
+    appendMessage("bot", "Bağlantı hatası! Lütfen API anahtarını kontrol et.");
   } finally {
     aiCore.classList.remove("thinking");
   }
@@ -98,3 +97,4 @@ function appendMessage(role, text) {
 
 sendBtn.addEventListener("click", sendMessage);
 userInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
+          
